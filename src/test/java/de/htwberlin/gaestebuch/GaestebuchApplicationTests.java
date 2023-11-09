@@ -8,6 +8,6 @@ class GaestebuchApplicationTests {
 
 	@Test
 	void contextLoads() {
-	}
 
+	}
 }
