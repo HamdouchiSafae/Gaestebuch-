@@ -12,6 +12,8 @@ public class PersonCreateRequest {
         this.invited = invited;
     }
 
+    public PersonCreateRequest() {}
+
     public String getFirstName() {
         return firstName;
     }

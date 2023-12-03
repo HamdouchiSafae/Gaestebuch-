@@ -31,7 +31,7 @@ public class PersonService {
     }
 
     private Person transformEntity(PersonEntity personEntity){
-        return new Person(
+        return new Person (
                 personEntity.getId(),
                 personEntity.getFirstName(),
                 personEntity.getLastName(),
