@@ -1,6 +1,8 @@
 package de.htwberlin.gaestebuch.web.api;
 
 
+import de.htwberlin.gaestebuch.persistence.Gender;
+
 import java.util.List;
 
 public class Person {
@@ -9,14 +11,16 @@ public class Person {
     private String firstName;
     private String lastName;
     private boolean invited;
-    private List<Long> kids;
 
-    public Person(long id, String firstName, String lastName, boolean invited, List<Long> kids) {
+    private String gender;
+
+
+    public Person(long id, String firstName, String lastName, boolean invited, String gender) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.invited = invited;
-        this.kids = kids;
+        this.gender = gender;
     }
 
     public long getId() {
@@ -51,13 +55,14 @@ public class Person {
         this.invited = invited;
     }
 
-    public List<Long> getKids() {
-        return kids;
+    public String getGender() {
+        return gender;
     }
 
-    public void setKids(List<Long> kids) {
-        this.kids = kids;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
+
 
 }
 

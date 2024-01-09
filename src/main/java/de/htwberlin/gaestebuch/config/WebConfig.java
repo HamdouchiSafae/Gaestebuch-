@@ -14,8 +14,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/api/**")
                 .allowedMethods("*")
                 .allowedOrigins(
-                        "http://localhost:8081/",
-                        "http://localhost:8080/db-console"
+                        "http://localhost:8081"
                 );
     }
 }

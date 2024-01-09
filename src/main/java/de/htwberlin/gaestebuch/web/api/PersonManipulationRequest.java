@@ -1,18 +1,20 @@
 package de.htwberlin.gaestebuch.web.api;
 
-public class PersonCreateRequest {
+public class PersonManipulationRequest {
 
     private String firstName;
     private String lastName;
+    private String gender;
     private boolean invited;
 
-    public PersonCreateRequest(String firstName, String lastName, boolean invited) {
+    public PersonManipulationRequest(String firstName, String lastName, String gender, boolean invited) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.gender = gender;
         this.invited = invited;
     }
 
-    public PersonCreateRequest() {}
+    public PersonManipulationRequest() {}
 
     public String getFirstName() {
         return firstName;
@@ -28,6 +30,14 @@ public class PersonCreateRequest {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public boolean isInvited() {

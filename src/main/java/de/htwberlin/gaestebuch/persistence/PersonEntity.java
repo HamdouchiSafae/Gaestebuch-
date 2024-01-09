@@ -4,36 +4,41 @@ import de.htwberlin.gaestebuch.web.api.Person;
 import jakarta.persistence.*;
 
 
-@Entity
+@Entity(name = "persons")
 public class PersonEntity {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-   // @Column(name="id")
+    @Column(name="id")
     private Long id;
-   // @Column(name="first_Name",nullable=false)
+    @Column(name="first_Name",nullable = false)
     private String firstName;
-    //@Column(name="last_Name",nullable=false)
+    @Column(name="last_Name",nullable = false)
     private String lastName;
-    //@Column(name="is_invited")
+    @Column(name="is_invited")
     private Boolean invited;
 
+    @Column(name = "gender")
+    @Enumerated(value = EnumType.STRING)
+    private Gender gender;
 
-    public PersonEntity(Long id, String firstName, String lastName, Boolean invited) {
-        this.id = id;
+
+    public PersonEntity(String firstName, String lastName, Boolean invited, Gender gender) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.invited = invited;
+        this.gender = gender;
     }
 
 
     protected PersonEntity(){}
 
-    public PersonEntity(String firstName, String lastName, boolean invited) {
+   /* public PersonEntity(String firstName, String lastName, boolean invited) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.invited = invited;
-    }
+        }
+   */
 
     public Long getId(){
         return id;
@@ -65,8 +70,11 @@ public class PersonEntity {
     }
 
 
-    public void setId(Long id) {
-        this.id = id;
+    public Gender getGender() {
+        return gender;
     }
 
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
 }

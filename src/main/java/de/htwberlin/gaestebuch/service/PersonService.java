@@ -1,9 +1,10 @@
 package de.htwberlin.gaestebuch.service;
 
+import de.htwberlin.gaestebuch.persistence.Gender;
 import de.htwberlin.gaestebuch.persistence.PersonEntity;
 import de.htwberlin.gaestebuch.persistence.PersonRepository;
 import de.htwberlin.gaestebuch.web.api.Person;
-import de.htwberlin.gaestebuch.web.api.PersonCreateRequest;
+import de.htwberlin.gaestebuch.web.api.PersonManipulationRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,30 +14,63 @@ import java.util.stream.Collectors;
 public class PersonService {
 
     private final PersonRepository personRepository;
+    private final PersonTransformer personTransformer;
 
-    public PersonService(PersonRepository personRepository){
+    public PersonService(PersonRepository personRepository, PersonTransformer personTransformer){
         this.personRepository = personRepository;
+        this.personTransformer = personTransformer;
     }
     public List<Person> findAll(){
         List<PersonEntity> persons = personRepository.findAll();
         return persons.stream()
-                .map(this::transformEntity)
+                .map(personTransformer::transformEntity)
                 .collect(Collectors.toList());
-
     }
-    public Person create(PersonCreateRequest request){
-        var personEntity = new PersonEntity(request.getFirstName(), request.getLastName(), request.isInvited());
+
+    public Person findById(Long id) {
+        var personEntity = personRepository.findById(id);
+        return personEntity.map(personTransformer::transformEntity).orElse(null);
+    }
+
+    public Person create(PersonManipulationRequest request){
+        var gender = Gender.valueOf(request.getGender());
+        var personEntity = new PersonEntity(request.getFirstName(), request.getLastName(), request.isInvited(), gender);
         personEntity = personRepository.save(personEntity);
-        return transformEntity(personEntity);
+        return personTransformer.transformEntity(personEntity);
     }
 
-    private Person transformEntity(PersonEntity personEntity){
-        return new Person (
+    public Person update(Long id, PersonManipulationRequest request) {
+        var personEntityOptional = personRepository.findById(id);
+        if (personEntityOptional.isEmpty()) {
+            return null;
+        }
+
+        var personEntity = personEntityOptional.get();
+        personEntity.setFirstName(request.getFirstName());
+        personEntity.setLastName(request.getLastName());
+        personEntity.setInvited(request.isInvited());
+        personEntity.setGender(Gender.valueOf(request.getGender()));
+        personEntity = personRepository.save(personEntity);
+
+        return personTransformer.transformEntity(personEntity);
+    }
+
+    public boolean deleteById(Long id) {
+        if (!personRepository.existsById(id)) {
+            return false;
+        }
+
+        personRepository.deleteById(id);
+        return true;
+    }
+
+
+  /*  private Person transformEntity(PersonEntity personEntity) {
+        return new Person(
                 personEntity.getId(),
                 personEntity.getFirstName(),
                 personEntity.getLastName(),
                 personEntity.getInvited()
         );
-
-    }
+    }*/
 }
